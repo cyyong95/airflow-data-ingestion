@@ -1,0 +1,6 @@
+venv
+Dockerfile
+Makefile
+.idea
+.vscode
+.git
