@@ -1,61 +1,75 @@
-# Simple Data Ingestion
+# Airflow Data Ingestion
 
-The python script is created to ingest a parquet file from a URL specified in
-an environment file, and populate a Postgresql database.  
+Airflow running on LocalExecutor started up by docker-compose.
 
-The whole process is run on containers.
+Purpose of this project is to learn the concepts of airflow as well as its capabilities.
 
-## Prerequisite
-Before we begin, there are a few tools that are needed to run the project
+This project can also serve as a template to expand on in the future to play with different types of Executors on Airflow
+
+# Prerequisite
+
+Before we begin, there are a few tools needed to run the project
+
 1. Python
 2. Make
 3. Docker
 4. Docker Compose
 
-## Steps to run the project
-### Environment file setup
-The project has been setup to run in a few steps:  
-First we create a `.env` file with the following variables and fill in the values
-```
-HOST_PORT=<host_port>
-HOST_VOLUME_DIR=<directory_to_save_database_state>
-DATABASE_CONTAINER_NAME=<database_container_name>
-CONTAINER_PORT=<container_port>
-POSTGRES_USER=<database_username>
-POSTGRES_PASSWORD=<database_password>
-POSTGRES_DB=<database_name>
-POSTGRES_TABLE_NAME=<database_table_name>
-DATASET_PARQUET=<text_file_parquet/url_to_parquet_file>
-```
+# Setting up
 
-After creating the `.env` file, we just need to run the command
-```
-make ingest
-```
+After cloning the repo, navigate into the root directory of the repo.
 
-Running this command will build the containers, and run the script will
-read the parquet file or download a parquet file from a specified URL,
-and start ingesting the first 100 records.
+In the root directory, run the following command to setup a python virtual environment and directories needed for Airflow to run locally.
 
-### Running the script locally
-In order to run the script locally, we will need to run this command
+After the setup, activate the virtual environment.
+
 ```
-# initialize a virtual environment
 make setup
-
-# activate the virtual environment
 source venv/bin/activate
 ```
 
-After activating the virtual environment, we'll have to manually build
-the `Dockerfile`, and run the image with an existing database container in
-the same docker network.
+Next, we need to create an `.env` file and populate it with some environment variables.
 
-## Contribution guidelines
+```.env
+# Airflow config
+AIRFLOW__CORE__EXECUTOR=LocalExecutor
+AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql://airflow:airflow@postgres/airflow
+AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=true
+AIRFLOW__CORE__LOAD_EXAMPLES=false
+AIRFLOW_UID=50000
+```
+
+The `.env` file is needed inside the `compose.yaml` file.  
+After creating the `.env` file, run the following command to start airflow locally.
+
+```
+make up
+```
+
+To login into airflow, enter `http://localhost:8080` into your browser.  
+Username and password are both admin.
+
+Once we're done with running Airflow locally, we can run this command to remove the containers, and re-create the directories needed for Airflow to run.
+
+Navigate to the Makefile section, and remove the `make reset` command inside of the `Makefile.down` section to preserve the airflow data for the next local run.
+
+```
+make down
+```
+
+To clean up the virtual environment & airflow data directories created during setup, run:
+
+```
+make clean-setup
+```
+
+# Contribution guidelines
+
 1. Each contribution should be in a separate branch
 2. A Pull Request (PR) will be created to merge changes into the master branch
 3. Each Pull Request (PR) title will need to have the one of the
-following prefix
+   following prefix
+
 ```
 - feat:     A new feature
 - fix:      A bug fix
@@ -65,4 +79,4 @@ following prefix
 - perf:     A code change that improves performance
 - test:     Adding missing tests
 - chore:    Maintain. Changes to the build process or auxiliary tools/libraries/documentation
-``` 
+```

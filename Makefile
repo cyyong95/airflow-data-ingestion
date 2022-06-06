@@ -5,16 +5,27 @@ setup:
 		. venv/bin/activate; \
 		pip3 install --upgrade pip; \
 		pip3 install -r requirements.txt; \
+		mkdir airflow/logs && mkdir airflow/airflow_pg_data; \
 	)
 
 .PHONY: clean-setup
-clean:
+clean-setup:
 	rm -rf venv
+	rm -rf airflow/logs
+	rm -rf airflow/airflow_pg_data
 
-.PHONY: ingest
-ingest:
-	docker-compose up
+.PHONY: reset
+reset:
+	rm -rf airflow/logs
+	rm -rf airflow/airflow_pg_data
+	mkdir airflow/logs
+	mkdir airflow/airflow_pg_data
 
-.PHONY: clean-ingest
-clean-ingest:
-	docker-compose down
+.PHONY: up
+up:
+	docker-compose -f compose.yaml up --build
+
+.PHONY: down
+down:
+	docker-compose -f compose.yaml down
+	make reset

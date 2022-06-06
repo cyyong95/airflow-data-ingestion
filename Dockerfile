@@ -1,12 +1,15 @@
-FROM python:3.9.12
+FROM apache/airflow:slim-latest-python3.9
 
-WORKDIR app
+USER root
 
-COPY requirements.txt ./
-COPY .env ./
+COPY ./airflow/scripts/entrypoint.sh ./entrypoint.sh
+COPY ./airflow/scripts/webserver.sh ./webserver.sh
 
-RUN pip3 install -r requirements.txt
+RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./webserver.sh
 
-COPY src src
+USER airflow
 
-ENTRYPOINT ["python", "-u", "src/main.py"]
+COPY ./requirements.txt ./requirements.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install -r ./requirements.txt
