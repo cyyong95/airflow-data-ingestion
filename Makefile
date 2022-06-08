@@ -4,7 +4,7 @@ setup:
 		python3 -m venv venv; \
 		. venv/bin/activate; \
 		pip3 install --upgrade pip; \
-		pip3 install -r requirements.txt; \
+		pip3 install -r requirements_dev.txt; \
 		mkdir airflow/logs && mkdir airflow/airflow_pg_data; \
 	)
 
