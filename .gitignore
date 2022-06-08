@@ -4,3 +4,5 @@ venv
 data
 .env
 **/__pycache__
+airflow/airflow_pg_data
+airflow/logs
