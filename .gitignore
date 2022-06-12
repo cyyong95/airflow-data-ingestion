@@ -6,3 +6,4 @@ data
 **/__pycache__
 airflow/airflow_pg_data
 airflow/logs
+airflow/dags/apis/coins_list.json
