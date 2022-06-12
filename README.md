@@ -40,28 +40,24 @@ AIRFLOW_UID=50000
 ```
 
 The `.env` file is needed inside the `compose.yaml` file.  
-After creating the `.env` file, run the following command to start airflow locally.
 
-```
-make up
-```
+After creating the `.env` file, run `make up` to start airflow locally.
 
 To login into airflow, enter `http://localhost:8080` into your browser.  
-Username and password are both admin.
-
-Once we're done with running Airflow locally, we can run this command to remove the containers, and re-create the directories needed for Airflow to run.
-
-Navigate to the Makefile section, and remove the `make reset` command inside of the `Makefile.down` section to preserve the airflow data for the next local run.
-
-```
-make down
+```airflow username & password
+Username: admin
+Password: admin
 ```
 
-To clean up the virtual environment & airflow data directories created during setup, run:
+Once we're done with running Airflow locally, we can run this `make down` to remove the containers, and 
+directories needed for Airflow to run
 
-```
-make clean-setup
-```
+* Note
+Navigate to the `Makefile`, and remove the `make reset` command inside 
+the `Makefile.down` section to preserve the airflow data for the next local run.
+
+To clean up the virtual environment & airflow data directories created during setup, 
+run `make clean-setup`
 
 # Contribution guidelines
 
